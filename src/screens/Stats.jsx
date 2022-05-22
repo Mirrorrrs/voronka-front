@@ -1,9 +1,19 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ContentContainer from "../components/content_container/ContentContainer";
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import {orange} from "@mui/material/colors";
+import {$authHost} from "../http";
 
 const Stats = () => {
+    const [per, setPer] = useState(0)
+    const fetch = async ()=>{
+       const data = await $authHost.get("review/get_persentage")
+        setPer(Math.floor(data.data))
+    }
+
+    useEffect(()=>{
+        fetch()
+    },[])
     return (
         <ContentContainer title={"Статистика"}>
             <div style={{width:"100%",display:"flex", flexDirection:"column",alignItems:"center"}}>
@@ -13,7 +23,7 @@ const Stats = () => {
                     fontSize:"110px",
                     margin:0,
                     color:orange[700]
-                }}>72%</h5>
+                }}>{per}%</h5>
             </div>
         </ContentContainer>
     );
